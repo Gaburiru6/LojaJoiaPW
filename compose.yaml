@@ -1,0 +1,18 @@
+version: '3.8' # Especifica a versão do Docker Compose
+
+services:
+  db:
+    image: postgres:alpine # Usa a imagem oficial do PostgreSQL baseada em Alpine Linux, que é mais leve [cite: 17]
+    container_name: meu_postgres_container # Nome opcional para o contêiner
+    restart: always # Define a política de reinicialização do contêiner
+    ports:
+      - "5432:5432" # Mapeia a porta 5432 do contêiner para a porta 5432 do host [cite: 17]
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME:-postgres} # Define o nome de usuário do banco[cite: 17]. Usa 'postgres' se DATABASE_USERNAME não estiver definido.
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-admin} # Define a senha do usuário do banco[cite: 17]. Usa 'admin' se DATABASE_PASSWORD não estiver definido.
+      POSTGRES_DB: ${DATABASE_NAME:-mydatabase} # Define o nome do banco de dados a ser criado[cite: 17]. Usa 'minha_base_de_dados' se DATABASE_NAME não estiver definido.
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persiste os dados do PostgreSQL em um volume chamado 'postgres_data'
+
+volumes:
+  postgres_data: # Define o volume para persistência dos dados
